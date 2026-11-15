@@ -1,7 +1,7 @@
 {
   "name": "FinTrack — мой капитал",
   "short_name": "FinTrack",
-  "start_url": "./FinTrack.html",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#f4f0e6",

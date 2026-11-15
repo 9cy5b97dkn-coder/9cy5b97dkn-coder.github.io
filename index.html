@@ -2,10 +2,46 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="refresh" content="0; url=./FinTrack.html">
-<title>FinTrack</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="FinTrack">
+<meta name="theme-color" content="#f4f0e6">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/Money%20bag/3D/money_bag_3d.png">
+<title>FinTrack — мой капитал</title>
+<style>
+body{margin:0;background:#f4f0e6;display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:-apple-system,'Segoe UI',Roboto,sans-serif;color:#5b5344}
+#ld{text-align:center;padding:24px;line-height:1.6}
+.sp{width:42px;height:42px;margin:0 auto 14px;border:4px solid #e5ddc9;border-top-color:#8b6f4e;border-radius:50%;animation:sp 1s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+</style>
 </head>
-<body style="font-family:sans-serif;text-align:center;padding-top:40vh;background:#f4f0e6;color:#14532d">
-Открываю FinTrack… <a href="./FinTrack.html">нажмите, если не перенаправило</a>
+<body>
+<div id="ld"><div class="sp"></div>Загрузка FinTrack…</div>
+<script>
+var PATCH={"c1.txt":[[3819,0,"vF9M"]],"c2.txt":[[3463,0,"7"]],"c3.txt":[[838,0,"2Xg"],[989,0,"x"],[990,0,"5S"],[991,1,"E"],[996,0,"1"]],"c4.txt":[[2117,0,"0"],[6374,0,"w"],[7363,1,"1"]],"c5.txt":[[4192,2,"r"],[5833,1,"2eG8R8ltxe"],[5866,1,"H"]]};
+function ap(s,ops){var off=0;for(var k=0;k<ops.length;k++){var o=ops[k],p=o[0]+off;s=s.slice(0,p)+o[2]+s.slice(p+o[1]);off+=o[2].length-o[1];}return s}
+async function boot(){
+try{
+var names=['c1.txt','c2.txt','c3.txt','c4.txt','c5.txt'],parts=[];
+for(var i=0;i<names.length;i++){
+var r=await fetch(names[i],{cache:'no-store'});
+if(!r.ok)throw 0;
+parts.push(ap(await r.text(),PATCH[names[i]]));
+}
+var bin=atob(parts.join('').replace(/\s+/g,''));
+var bytes=new Uint8Array(bin.length);
+for(var j=0;j<bin.length;j++)bytes[j]=bin.charCodeAt(j);
+var html=await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'))).text();
+if(html.indexOf('FinTrack')<0||html.indexOf('ft_v3')<0)throw 0;
+document.open();document.write(html);document.close();
+}catch(e){
+document.getElementById('ld').innerHTML='Не удалось загрузить приложение 😔<br><br>Проверьте интернет и обновите страницу.';
+}
+}
+boot();
+</script>
 </body>
 </html>
